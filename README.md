@@ -1,30 +1,32 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a Black Matter Labs boiler plate template that has form validation, analytics, and firebase baked in,
 
 ## Getting Started
 
-First, run the development server:
+Step 1: Clone the landing page boiler plate repo and run `npm install`
+Step 2: Add your firebase config to `/firebase/index.js`  
+Step 3: Add your new hotjar IDs to `/pages/app.js`
+
+## Creating the landing page
+
+Step 4: Go to the [Ant Design Editor](https://landing.ant.design/) and design a landing page.  
+Step 5: Optimize all design images using this [site](https://imagecompressor.com/) and save them to the firebase bucket. Add the URLs to the ant design editor  
+Step 6: Download the components from ant landing editor and dump the files into `/components` in the boilerplate
+Step 7: Put the generated `index.js` in the `/pages` folder
+
+## Last Steps
+
+Step 7: Add Email Submit CTA component from `/components/EmailSubmit.js` (This component is meant to house all the firebase and email validation in one place)  
+Step 8: Change email subscribe questions in `/components/EmailSubmit.js`  
+Step 9: Change the favicon.ico
+
+## Run the project
 
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deploy
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Add the project as a repo to the [Black Matter Labs Org](https://github.com/Black-Matter-Labs)
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Deploy the new org repo into the [Black Matter Labs Vercel Account](https://vercel.com/dashboard)

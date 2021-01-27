@@ -1,23 +1,14 @@
 import React, { useState } from 'react'
-import { Form, Input, Button, Modal, Checkbox } from 'antd';
-import firebase from 'firebase';
+import { Form, Input, Button, Modal, Checkbox } from 'antd'
+import { analytics, db } from '../firebase'
 
-const config = {
-    apiKey: "AIzaSyBlhoKPib9dHVE9HjrzaC8oiNI4s4cDHH4",
-    authDomain: "weedibles-400e3.firebaseapp.com",
-    projectId: "weedibles-400e3",
-    storageBucket: "weedibles-400e3.appspot.com",
-    messagingSenderId: "974852536169",
-    appId: "1:974852536169:web:b3a6e712434da9e3f9aff8",
-    measurementId: "G-58R0LBD6WN"
-  };
+// TODO: change modal questions
 
-if (!firebase.apps.length) {
-    firebase.initializeApp(config);
-} else {
-    firebase.app();
-}
-// firebase.analytics();
+const questions = [
+    'What is your biggest problem when making cannabis edibles?',
+    'Why would it make a difference in your life to get an easier way to make edibles? (Details, please.)',
+    'How difficult has it been for you to find a good answer for the above up to now?',
+]
 
 function validateEmail(email) {
     const re = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
@@ -28,39 +19,35 @@ const EmailForm = () => {
     const [modal, setModal] = useState(false)
 
     const [email, setEmail] = useState('');
-    const emailHandler = ({ target: { value } }) => setEmail(value)
+    const emailHandler = ({ target: { value } }) => setEmail(value.trim())
     
     const [error, setError] = useState('');
 
     const submitHandler = async () => {
-        if (!email.trim()) {
-            setError('Email is required.')
-        } else if (!validateEmail(email.trim())) {
-            setError('Please use a valid email.')
-        } else {
-            const emailRef = firebase.firestore().collection('validation-email-marketing').doc(email.trim())
-            const doc = await emailRef.get()
-            
-            if (doc.exists) {
-                setError('You already signed up using this email')
+        try {
+            if (!email) {
+                setError('Email is required.')
+            } else if (!validateEmail(email)) {
+                setError('Please use a valid email.')
             } else {
-                setError('')
-                setModal(true)
-                try {
-                    firebase.firestore().collection('validation-email-marketing').doc(email.trim()).set({ signedUpDate: new Date().toLocaleString() })
-                } catch (err) {
-                    console.error(err)
+                const emailRef = db.collection('validation-email-marketing').doc(email)
+                const doc = await emailRef.get()
+                
+                if (doc.exists) {
+                    setError('You already signed up using this email')
+                } else {
+                    setError('')
+                    setModal(true)
+                    emailRef.set({ signedUpDate: new Date().toLocaleString() })
+                    analytics('landing_page_email_signup')
                 }
+    
             }
-
+        } catch (error) {
+            console.error(error)
+            analytics('error_landing_email_signup', { error })
         }
     }
-
-    const questions = [
-        'What is your biggest problem when making cannabis edibles?',
-        'Why would it make a difference in your life to get an easier way to make edibles? (Details, please.)',
-        'How difficult has it been for you to find a good answer for the above up to now?',
-    ]
 
     const [answers, setAnswers] = useState(
         questions.reduce((acc, val) => {
@@ -91,9 +78,11 @@ const EmailForm = () => {
 
         if (!hasErrors) {
             try {
-                firebase.firestore().collection('validation-questions').doc(email.trim()).set(answers)
-            } catch (err) {
-                console.error(err)
+                db.collection('validation-questions').doc(email).set(answers)
+                analytics('landing_page_validation_questions', { answers })
+            } catch (error) {
+                console.error(error)
+                analytics('error_landing_validation_questions', { error })
             }
             setEmail('')
             setModal(false)

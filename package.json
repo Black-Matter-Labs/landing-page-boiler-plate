@@ -10,6 +10,7 @@
   "dependencies": {
     "antd": "^4.10.0",
     "babel-plugin-import": "^1.13.3",
+    "detect-node": "^2.0.4",
     "enquire-js": "^0.2.1",
     "firebase": "^8.2.1",
     "less": "^2.7.3",

@@ -2,7 +2,7 @@ This is a Black Matter Labs boiler plate template that has form validation, anal
 
 ## Getting Started
 
-Step 1: Clone the landing page boiler plate repo and run `npm install`
+Step 1: Clone the landing page boiler plate repo and run `npm install`  
 Step 2: Add your firebase config to `/firebase/index.js`  
 Step 3: Add your new hotjar IDs to `/pages/app.js`
 
@@ -15,9 +15,9 @@ Step 7: Put the generated `index.js` in the `/pages` folder
 
 ## Last Steps
 
-Step 7: Add Email Submit CTA component from `/components/EmailSubmit.js` (This component is meant to house all the firebase and email validation in one place)  
-Step 8: Change email subscribe questions in `/components/EmailSubmit.js`  
-Step 9: Change the favicon.ico
+Step 8: Add Email Submit CTA component from `/components/EmailSubmit.js` (This component is meant to house all the firebase and email validation in one place)  
+Step 9: Change email subscribe questions in `/components/EmailSubmit.js`  
+Step 10: Change the favicon.ico
 
 ## Run the project
 
